@@ -10,6 +10,11 @@ class App extends Component {
     }
   };
 
+  state = {
+    
+  }
+  
+
   render() {
     const { store } = this.props
     return (
