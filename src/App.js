@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import List from './List'
+import List from './List';
+import Card from './Card';
 import './App.css';
 
 class App extends Component {
@@ -43,6 +44,35 @@ class App extends Component {
       'm': { id: 'm', title: 'Thirteenth card', content: 'lorem ipsum' },
     },
   }
+
+  handleDeleteCard = (cardId) =>{
+    let newAllCards = this.omit(this.state.allCards, cardId);
+    
+    let newLists = this.state.lists.map(list => {
+
+      return {
+        ...list,
+        cardIds: list.cardIds.filter(id => id !== cardId)
+      }
+    })
+
+    this.setState(
+      {
+        allCards: newAllCards,
+        lists: newLists,
+      }
+
+    )
+  }
+  
+  omit(obj, keyToOmit) {
+    return Object.entries(obj).reduce(
+      (newObj, [key, value]) =>
+          key === keyToOmit ? newObj : {...newObj, [key]: value},
+      {}
+    );
+  }
+  
 
   handleCardAdd = (listId) => {
     //call random card to generate new function
@@ -96,6 +126,7 @@ class App extends Component {
               header={list.header}
               cards={list.cardIds.map(id => this.state.allCards[id])}
               onClickAdd={this.handleCardAdd}
+              onClickDelete={this.handleDeleteCard}
             />
           ))}
         </div>

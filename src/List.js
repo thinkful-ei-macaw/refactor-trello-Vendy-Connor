@@ -6,6 +6,7 @@ export default function List(props) {
 
   List.defaultProps = {
     onClickAdd: () => {},
+
   }
 
   
@@ -22,6 +23,8 @@ export default function List(props) {
             key={card.id}
             title={card.title}
             content={card.content}
+            cardId={card.id}
+            onClickDelete={props.onClickDelete}
           />
         )}
         <button
