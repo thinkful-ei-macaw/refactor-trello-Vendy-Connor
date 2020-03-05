@@ -44,22 +44,30 @@ class App extends Component {
     },
   }
 
-  handleRandomCard = (listId) => {
+  handleCardAdd = (listId) => {
     //call random card to generate new function
-    const newCard = newRandomCard();
+    const newCard = this.newRandomCard();
     //need to update the state to add new random card
     
     this.setState({
-      id,
-      title: `Random Card ${id}`,
-      content: 'lorem ipsum',
+      lists: this.state.lists.map(list => {
+        if (listId === list.id) {
+          // add card id
+          return {
+            // gets all old properties from the object
+            ...list,
+            // replaces cardIds value with new value 
+            cardIds: [...list.cardIds, newCard.id],
+            // alternative to using spread: list.cardIds.concat(newCard.id) - concat gives back new array instead of changing old one
+          }
+        } else {
+          return list
+        }
+      }),
 
-
-      allCards:
-        id :{
-        id,
-        title: `Random Card ${id}`,
-        content: 'lorem ipsum'}
+      allCards: {...this.state.allCards,
+        [newCard.id]: newCard,
+      }
     })
   }
 
@@ -74,20 +82,20 @@ class App extends Component {
   }
 
   render() {
-    const { state } = this.state;
+    // const { state } = this;
     return (
       <main className='App'>
         <header className='App-header'>
           <h1>Trelloyes!</h1>
         </header>
         <div className='App-list'>
-          {state.lists.map(list => (
+          {this.state.lists.map(list => (
             <List
               key={list.id}
               id={list.id}
               header={list.header}
-              cards={list.cardIds.map(id => state.allCards[id])}
-              onClickAdd={this.handleRandomCard}
+              cards={list.cardIds.map(id => this.state.allCards[id])}
+              onClickAdd={this.handleCardAdd}
             />
           ))}
         </div>
